@@ -16,13 +16,14 @@ class Travel(models.Model):
     topicTranslation = models.CharField(max_length=255,blank=True, null=True)
     city=models.IntegerField(verbose_name='城市编码',default=0,null=True,blank=True)
     cityTranslation=models.CharField(max_length=20, verbose_name='城市', null=True,blank=True)
-    low_price=models.IntegerField(verbose_name='最低门票',default=0, null=True,blank=True)
-    high_price=models.IntegerField(verbose_name='最高门票',default=100000, null=True,blank=True)
+    low_price=models.FloatField(verbose_name='最低门票',default=0, null=True,blank=True)
+    high_price=models.FloatField(verbose_name='最高门票',default=100000, null=True,blank=True)
     address = models.TextField(blank=True, null=True)
     
     url = models.TextField(blank=True, null=True)
     img = models.TextField(blank=True, null=True)
-    def to_dict(job,type):
+    created_time = models.DateTimeField(auto_now_add=True)  # 添加创建时间字段
+    def to_dict(self):
         # 将模型实例转换为字典
         job_dict = {
             'id':self.id,
@@ -35,6 +36,7 @@ class Travel(models.Model):
             'high_price':self.high_price,
             'url':self.url,
             'img':self.img,
+            'create_time':self.created_time
         }
         # 将字典转换为JSON字符串并返回
         return job_dict
@@ -56,8 +58,8 @@ class UserResume(models.Model):
     city3Translation=models.CharField(max_length=20, verbose_name='期望城市3', null=True,blank=True)
     topic=models.BigIntegerField( verbose_name='期望景点类型编码',default=0, null=True,blank=True)
     topicTranslation=models.CharField(max_length=20, verbose_name='期望景点类型',default=0, null=True,blank=True)
-    low_price=models.IntegerField(verbose_name='期望最低经费',default=0, null=True,blank=True)
-    high_price=models.IntegerField(verbose_name='期望最高经费',default=100000, null=True,blank=True)
+    low_price=models.FloatField(verbose_name='期望最低经费',default=0, null=True,blank=True)
+    high_price=models.FloatField(verbose_name='期望最高经费',default=100000, null=True,blank=True)
 
     
     
@@ -100,6 +102,7 @@ class user(AbstractUser):
     genderTranslation= models.CharField(max_length=2, default='男', verbose_name='性别',null=True)
     phone = models.CharField(max_length=11, verbose_name='手机号', null=False)
     photo = models.ImageField('头像', upload_to=user_directory_path, blank=True, null=True,default='default/user.jpg')
+    resume_id=models.IntegerField(  blank=True,null=True)
     init = models.BooleanField('初始化', blank=True, null=True,default=False)
     last_update = models.DateTimeField(auto_now=True, verbose_name='最后修改时间')    
     def __str__(self):
@@ -127,13 +130,13 @@ class Recommendforallusers(models.Model):
     @property
     def recommend_job_list(self):
         
-        return [i.get('job_id') for i in loads(self.recommendations)]
+        return [i.get('id') for i in loads(self.recommendations)]
     class Meta:
         verbose_name = '用户推荐列表'
         managed = False
         db_table = 'recommendforallusers'
         
-class StarJobs(models.Model):
+class StarTravel(models.Model):
     sid=models.BigAutoField(primary_key=True)
     user=models.ForeignKey('api.user', verbose_name="用户", on_delete=models.CASCADE)
     travel=models.ForeignKey('api.Travel', verbose_name="景点", on_delete=models.CASCADE)
@@ -142,7 +145,7 @@ class StarJobs(models.Model):
         verbose_name = '收藏列表'
         db_table = 'star'
         
-class ClickJobs(models.Model):
+class ClickTravel(models.Model):
     cid=models.BigAutoField(primary_key=True)
     user=models.ForeignKey('api.user', verbose_name="用户", on_delete=models.CASCADE)
     travel=models.ForeignKey('api.Travel', verbose_name="景点", on_delete=models.CASCADE)

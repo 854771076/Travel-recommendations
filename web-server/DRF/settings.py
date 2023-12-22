@@ -66,7 +66,7 @@ else:
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'travel',  #recruit_info
         'USER': 'root',  # os.environ.get('DJANGO_MYSQL_USER')
-        'PASSWORD': 'fiang123',  # os.environ.get('DJANGO_MYSQL_PASSWORD')
+        'PASSWORD': 'root',  # os.environ.get('DJANGO_MYSQL_PASSWORD')
         'HOST': '127.0.0.1',  # os.environ.get('DJANGO_MYSQL_HOST')
         'PORT': 3306,
         'OPTIONS': {'charset': 'utf8mb4'},
@@ -207,35 +207,11 @@ WSGI_APPLICATION = 'DRF.wsgi.application'
 
 # SMTP邮箱设置
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.163.com'  # 邮箱SMTP服务器地址
-# EMAIL_PORT = 994 # SMTP端口号
-# EMAIL_HOST_USER = '19122486487@163.com'  # 邮箱用户名
-# EMAIL_HOST_PASSWORD = 'YBZVZKEUBLUZVHBE'  # 邮箱密码
-# EMAIL_USE_TLS = True  # 使用TLS加密
-# DEFAULT_FROM_EMAIL = '19122486487@163.com'  # 默认发件人邮箱
 EMAIL_HOST = 'smtp.sina.com'  # 邮箱SMTP服务器地址
 
-EMAIL_HOST_USER = 'fiang854771076@sina.com'  # 邮箱用户名
-EMAIL_HOST_PASSWORD = 'f6f55ff529624775'  # 邮箱密码
-# EMAIL_USE_TLS = True  # 使用TLS加密
-DEFAULT_FROM_EMAIL = 'fiang854771076@sina.com'  # 默认发件人邮箱
-
-
-
-# EMAIL_HOST = 'smtp.gmail.com'  # 邮箱SMTP服务器地址
-# EMAIL_PORT = 587 # SMTP端口号
-# EMAIL_HOST_USER = 'fuyang854771076@gmail.com'  # 邮箱用户名
-# EMAIL_HOST_PASSWORD = 'xityaqadprlgpber'  # 邮箱密码
-# EMAIL_USE_TLS = True  # 使用TLS加密
-# DEFAULT_FROM_EMAIL = 'fuyang854771076@gmail.com'  # 默认发件人邮箱
-
-
-# EMAIL_HOST = 'smtp.qq.com'  # 邮箱SMTP服务器地址
-# EMAIL_PORT = 587  # SMTP端口号
-# EMAIL_HOST_USER = '854771076@qq.com'  # 邮箱用户名
-# EMAIL_HOST_PASSWORD = 'tipgvhczdypjbbgh'  # 邮箱密码
-# EMAIL_USE_TLS = True  # 使用TLS加密
-# DEFAULT_FROM_EMAIL = '854771076@qq.com'  # 默认发件人邮箱
+EMAIL_HOST_USER = 'fiang854771076@sina.com'  
+EMAIL_HOST_PASSWORD = 'f6f55ff529624775' 
+DEFAULT_FROM_EMAIL = 'fiang854771076@sina.com'
 #redis
 REDIS_HOST='127.0.0.1'
 REDIS_PORT=6379

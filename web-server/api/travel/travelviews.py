@@ -76,6 +76,7 @@ class TravelViewSet(viewsets.ModelViewSet):
 	search_fields = ('name',)
 	filterset_class =TravelFilter
 	permission_classes = [CustomPermission]
+	ordering_fields = ('create_time')
 	queryset = Travel.objects
 	serializer_class =TravelSerializer
 	lookup_field ='id'
@@ -302,8 +303,8 @@ class TravelViewSet(viewsets.ModelViewSet):
 						length=len(travel_list)
 						if length<pagesize:
 							# 热门数据填充
-							travel_id_list = [i.travel_id for i in hotTravel_TOP20.objects.all()]
-							travel_list+=[i.to_dict('热门') for i in Travel.objects.filter(travel_id__in=travel_id_list[:pagesize-length])]
+							travel_id_list = [i.id for i in hot_TOP20.objects.all()]
+							travel_list+=[i.to_dict('热门') for i in Travel.objects.filter(id__in=travel_id_list[:pagesize-length])]
 						#填充完还小于pagesize条，使用travel数据随机填充
 						length=len(travel_list)
 						if length<pagesize:
@@ -313,20 +314,20 @@ class TravelViewSet(viewsets.ModelViewSet):
 						Rrecommend=Recommendforallusers.objects.filter(user_id=user_id)
 						if Rrecommend.exists():
 							travel_id_list=Rrecommend.first().recommend_travel_list[(page-2)*pagesize:page*pagesize]
-							travel_list=[i.to_dict('匹配') for i in Travel.objects.filter(travel_id__in=travel_id_list)]
+							travel_list=[i.to_dict('匹配') for i in Travel.objects.filter(id__in=travel_id_list)]
 						else:
 							# 热门数据填充
 							# 获取热门的 travel_list
-							travel_id_list = [i.travel_id for i in hotTravel_TOP20.objects.all()]
-							travel_list=[i.to_dict('热门') for i in Travel.objects.filter(travel_id__in=travel_id_list)]
+							travel_id_list = [i.id for i in hot_TOP20.objects.all()]
+							travel_list=[i.to_dict('热门') for i in Travel.objects.filter(id__in=travel_id_list)]
 							if travel_list==[] or len(travel_list)<pagesize:
 								travel_list+=[i.to_dict('最新随机') for i in get_random_objects(Travel,pagesize-len(travel_list))]
 
 				else:
 					if page==1:
 						# 热门数据填充
-						travel_id_list = [i.travel_id for i in hotTravel_TOP20.objects.all()]
-						travel_list=[i.to_dict('热门') for i in Travel.objects.filter(travel_id__in=travel_id_list)]
+						travel_id_list = [i.id for i in hot_TOP20.objects.all()]
+						travel_list=[i.to_dict('热门') for i in Travel.objects.filter(id__in=travel_id_list)]
 						#最新随机数据填充
 						if travel_list==[] or len(travel_list)<pagesize:
 								travel_list+=[i.to_dict('最新随机') for i in get_random_objects(Travel,pagesize-len(travel_list))]

@@ -1,3 +1,6 @@
+import requests
+from lxml import etree
+from datetime import datetime
 class MysqlDB:
     '''
     mysql操作类
@@ -113,7 +116,7 @@ class MysqlDB:
         except:
             return False
 
-    def save(self, data: list, table_name: str, method: str = 'append'):
+    def save(self, data: list, table_name: str, method: str = 'repace'):
         '''
         简单便捷的保存方法
         自动建库建表
@@ -147,6 +150,11 @@ class MysqlDB:
         except Exception as e:
             conn.rollback()
             raise ValueError(f'保存失败-error:{e}-sql:{sql}')
+def   get_list_data(data):
+    if data!=[]:
+        return data[0].strip().replace(']','')
+    else:
+        return "" 
 def spider_page(page):
     headers={
     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'
@@ -169,9 +177,10 @@ def spider_page(page):
         'low_price':get_list_data(item.xpath('.//*[@class="product-price"]/em/text()')),
         'high_price':high_price,
         'address':d.get('景点地址'),
-        'city':get_list_data(item.xpath('//*[@class="city"]/text()')).split('·')[-1],
-        'url':get_list_data(item.xpath('//*[@class="product-picture"]/@href')),
-        'img':get_list_data(item.xpath('//*[@class="product-picture"]/img/@src'))
+        'city':get_list_data(item.xpath('.//*[@class="city"]/text()')).split('·')[-1],
+        'url':get_list_data(item.xpath('.//*[@class="product-picture"]/@href')),
+        'img':get_list_data(item.xpath('.//*[@class="product-picture"]/img/@src')),
+        'create_time':datetime.now()
         }
         res.append(data)
     return res
@@ -186,7 +195,7 @@ MYSQL_CONNECT = {
     'host': '127.0.0.1',
     'port': 3306,
     'user': 'root',
-    'password': 'fiang123',
+    'password': 'root',
     'charset': 'utf8',
     'db': 'spider'
 }

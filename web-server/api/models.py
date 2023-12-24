@@ -22,21 +22,22 @@ class Travel(models.Model):
     
     url = models.TextField(blank=True, null=True)
     img = models.TextField(blank=True, null=True)
-    created_time = models.DateTimeField(auto_now_add=True)  # 添加创建时间字段
-    def to_dict(self):
+    create_time = models.DateTimeField(auto_now_add=True)  # 添加创建时间字段
+    def to_dict(self,type):
         # 将模型实例转换为字典
         job_dict = {
             'id':self.id,
+            'type':type,
             'name':self.name,
             'topic':str(self.topic),
             'topicTranslation':self.topicTranslation,
-            'city':self.workcity,
+            'city':self.city,
             'cityTranslation':self.cityTranslation,
             'low_price':self.low_price,
             'high_price':self.high_price,
             'url':self.url,
             'img':self.img,
-            'create_time':self.created_time
+            'create_time':self.create_time
         }
         # 将字典转换为JSON字符串并返回
         return job_dict
@@ -76,11 +77,14 @@ class UserResume(models.Model):
             'birth': self.user.birth.strftime('%Y-%m-%d') if self.user.birth else '',
             'genderCode': str(self.user.genderCode).replace("None",""),
             'genderTranslation': self.user.genderTranslation,
-            'city': str(self.city).replace("None",""),
+            'city1': str(self.city1).replace("None",""),
             'city2': str(self.city2).replace("None",""),
             'city3': str(self.city3).replace("None",""),
             'topic': str(self.topic).replace("None",""),
-            'topic_name': self.topic_name,
+            'city1Translation': self.city1Translation,
+            'city2Translation': self.city2Translation,
+            'city3Translation': self.city3Translation,
+            'topicTranslation': self.topicTranslation,
             'low_price': self.low_price,
             'high_price': self.high_price,
             'created_time': self.created_time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -128,9 +132,9 @@ class Recommendforallusers(models.Model):
     user_id = models.IntegerField(primary_key=True)
     recommendations = models.TextField(blank=True, null=True)
     @property
-    def recommend_job_list(self):
+    def recommend_travel_list(self):
         
-        return [i.get('id') for i in loads(self.recommendations)]
+        return [i.get('travel_id') for i in loads(self.recommendations)]
     class Meta:
         verbose_name = '用户推荐列表'
         managed = False
@@ -144,7 +148,15 @@ class StarTravel(models.Model):
     class Meta:
         verbose_name = '收藏列表'
         db_table = 'star'
-        
+class CommentTravel(models.Model):
+    cid=models.BigAutoField(primary_key=True)
+    user=models.ForeignKey('api.user', verbose_name="用户", on_delete=models.CASCADE)
+    travel=models.ForeignKey('api.Travel', verbose_name="景点", on_delete=models.CASCADE)
+    content=models.TextField(verbose_name='内容')
+    create_time = models.DateTimeField(auto_now=False,auto_now_add=True, verbose_name='创建时间')
+    class Meta:
+        verbose_name = '评论列表'
+        db_table = 'comment'   
 class ClickTravel(models.Model):
     cid=models.BigAutoField(primary_key=True)
     user=models.ForeignKey('api.user', verbose_name="用户", on_delete=models.CASCADE)

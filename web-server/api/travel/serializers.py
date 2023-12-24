@@ -7,8 +7,8 @@ class TravelSerializer(serializers.ModelSerializer):
         model = Travel
         fields = '__all__'
 class RecommendSerializer(serializers.Serializer):
-    pagesize=serializers.IntegerField(max_value=10,min_value=1,default=5)
-    page=serializers.IntegerField(max_value=10,min_value=1,default=1)
+    pagesize=serializers.IntegerField(max_value=10,min_value=1,default=10)
+    page=serializers.IntegerField(max_value=5,min_value=1,default=1)
 class CollectSerializer(serializers.Serializer):
     id=serializers.CharField()
 class ClickSerializer(serializers.Serializer):

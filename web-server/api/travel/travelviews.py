@@ -25,14 +25,15 @@ class SimilarTravelList(generics.ListAPIView):
 		travel = Travel.objects.get(id=id)
 
 		query = (
-			Q(city=travel.industryname) &
+			Q(city=travel.city) &
 			Q(topic=travel.topic) &
-			Q(low_price__lte=travel.low_price) &
-			Q(high_price__gte=travel.high_price)
+			(Q(low_price__lte=travel.low_price) |
+			Q(high_price__gte=travel.high_price))
 		)
 
 		similar_Travel = Travel.objects.filter(query).exclude(id=id)
 		return similar_Travel
+
 
 def get_random_objects(queryset, num_objects):
 	random_objects = []
@@ -80,6 +81,41 @@ class TravelViewSet(viewsets.ModelViewSet):
 	queryset = Travel.objects
 	serializer_class =TravelSerializer
 	lookup_field ='id'
+	@action(detail=False, methods=['POST'])
+	def guihua(self,request):
+		data={
+			'code':'200',
+			'data':[],
+			'msg':'ok',
+		}
+		if request.user.is_authenticated:
+			try:
+				serializer=RecommendSerializer(data=request.GET)
+				if serializer.is_valid():
+					page=serializer.validated_data.get('page')
+					pagesize=serializer.validated_data.get('pagesize')
+					resume=UserResume.objects.get(user=request.user)
+					query = (
+						Q(city__in=[resume.city1,resume.city2,resume.city3]) &
+						Q(topic=resume.topic) &
+						(Q(low_price__lte=resume.low_price) |
+						Q(high_price__gte=resume.high_price))
+					)
+					travel_list=[i.travel.to_dict(None) for i in Travel.objects.filter()[(page-1)*pagesize:page*pagesize]]
+					
+					data['data']=travel_list
+				else:
+					# 参数有误
+					data['code']='-1'
+					data['msg']=serializer.errors	
+			except Exception as e:
+				data['code']='-1'
+				data['data']=str(e)
+				data['msg']='系统错误'
+		else:
+			data['code']=-1
+			data['msg']='请登录'
+		return Response(data)
 	@action(detail=False, methods=['POST'])
 	def click(self,request):
 		data={
@@ -166,6 +202,66 @@ class TravelViewSet(viewsets.ModelViewSet):
 					pagesize=serializer.validated_data.get('pagesize')
 					travel_list=[i.travel.to_dict(None) for i in StarTravel.objects.filter(user=request.user)[(page-1)*pagesize:page*pagesize]]
 					
+					data['data']=travel_list
+				else:
+					# 参数有误
+					data['code']='-1'
+					data['msg']=serializer.errors	
+			except Exception as e:
+				data['code']='-1'
+				data['data']=str(e)
+				data['msg']='系统错误'
+		else:
+			data['code']=-1
+			data['msg']='请登录'
+		return Response(data)
+	@action(detail=False, methods=['POST'])
+	def comment(self,request):
+		data={
+			'code':'200',
+			'data':None,
+			'msg':'ok',
+		}
+		if request.user.is_authenticated:
+			try:
+				serializer=CollectSerializer(data=request.data)
+				content=request.data.get('content')
+				if serializer.is_valid() and content:
+					id=serializer.validated_data.get('id')
+					travel=Travel.objects.filter(id=id).first()
+					Comment=CommentTravel.objects
+
+					Comment.create(user=request.user,travel=travel,content=content)
+					data['data']='ok'
+				else:
+					# 参数有误
+					data['code']='-1'
+					data['msg']=serializer.errors	
+			except Exception as e:
+				data['code']='-1'
+				data['data']=str(e)
+				data['msg']='系统错误'
+		else:
+			data['code']=-1
+			data['msg']='请登录'
+		return Response(data)
+	@action(detail=False, methods=['GET'])
+	def commentTravel(self,request):
+		data={
+			'code':'200',
+			'data':[],
+			'msg':'ok',
+		}
+		if request.user.is_authenticated:
+			try:
+				serializer=RecommendSerializer(data=request.GET)
+				oid=int(request.GET.get('id'))
+				if serializer.is_valid() and oid:
+					page=serializer.validated_data.get('page')
+					pagesize=serializer.validated_data.get('pagesize')
+					t=Travel.objects.get(id=oid)
+					travel_list=[{'id':i.cid,'username':i.user.username,'content':i.content,'create_time':i.create_time} for i in CommentTravel.objects.filter(travel=t).order_by('-create_time')[(page-1)*pagesize:page*pagesize]]
+					data['count']=CommentTravel.objects.filter(travel=t).count()
 					data['data']=travel_list
 				else:
 					# 参数有误
@@ -278,17 +374,17 @@ class TravelViewSet(viewsets.ModelViewSet):
 			'code':'200',
 			'data':None,
 			'msg':'ok',
-			'count':200
+			'count':50
 		}
 		serializer=RecommendSerializer(data=request.GET)
 		if serializer.is_valid():
 			try:
 				page=serializer.validated_data.get('page')
 				pagesize=serializer.validated_data.get('pagesize')
-				maxpage=10
+				maxpage=5
 				#最新随机列表limit
 				newlimit=1000
-				Travel=Travel.objects.order_by('-id')[:newlimit]
+				travel=Travel.objects.order_by('-id')[:newlimit]
 				if request.user.is_authenticated :
 					user_id=request.user.id
 					if page==1:
@@ -302,6 +398,7 @@ class TravelViewSet(viewsets.ModelViewSet):
 						travel_list=[Travel.objects.get(id=i.get('travel')).to_dict('实时') for i in get_random_objects(similar_travel_list,pagesize//2)]
 						length=len(travel_list)
 						if length<pagesize:
+							
 							# 热门数据填充
 							travel_id_list = [i.id for i in hot_TOP20.objects.all()]
 							travel_list+=[i.to_dict('热门') for i in Travel.objects.filter(id__in=travel_id_list[:pagesize-length])]
@@ -313,7 +410,7 @@ class TravelViewSet(viewsets.ModelViewSet):
 						#如果有离线推荐数据
 						Rrecommend=Recommendforallusers.objects.filter(user_id=user_id)
 						if Rrecommend.exists():
-							travel_id_list=Rrecommend.first().recommend_travel_list[(page-2)*pagesize:page*pagesize]
+							travel_id_list=Rrecommend.first().recommend_travel_list[(page-2)*pagesize:(page-1)*pagesize]
 							travel_list=[i.to_dict('匹配') for i in Travel.objects.filter(id__in=travel_id_list)]
 						else:
 							# 热门数据填充

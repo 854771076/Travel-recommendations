@@ -164,7 +164,7 @@ REST_FRAMEWORK = {
         'user': '10000/m',  # 用户每分50次请求
     },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,  # 指定每页的数据数量
+    'PAGE_SIZE': 10,  # 指定每页的数据数量
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 
     

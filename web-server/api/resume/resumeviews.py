@@ -51,10 +51,7 @@ class UserResumeViewSet(viewsets.ModelViewSet):
 
 		serializer.save()
 
-		u=user.objects.get(id=self.request.user.id)
-		if not u.init:
-			u.init=True
-			u.save()
+		
 		user = self.request.user
 		Logs.objects.create(user=user,active='更新画像',content=instance.to_json())
 	@action(detail=False, methods=['POST'])
@@ -104,8 +101,13 @@ class UserResumeViewSet(viewsets.ModelViewSet):
 		try:
 			serializer=resumeinfoSerializer(data=request.data)
 			OBJ=UserResume.objects.filter(user=request.user).first()
+
 			if serializer.is_valid():
 				serializer.update(OBJ,serializer.validated_data)
+				u=user.objects.get(id=self.request.user.id)
+				if not u.init:
+					u.init=True
+					u.save()
 
 			else:
 				data['code']=-1

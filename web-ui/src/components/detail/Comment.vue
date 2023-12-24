@@ -111,6 +111,7 @@ export default {
                     }
                     else{
                         this.$Message.error(response.data.msg,response.data.data)
+                        Loading.close()
                     }
 
                 })

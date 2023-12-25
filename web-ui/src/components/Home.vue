@@ -3,7 +3,9 @@
         <el-container>
             <el-header class="navbar-wrapper">
                 <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" :ellipsis="false" :router="true">
-
+                    <el-menu-item>
+                        <strong>Travel</strong>
+                    </el-menu-item>
                     <div class="flex-grow" />
                     <el-menu-item index="/" class="min_hide">首页</el-menu-item>
                     <el-menu-item index="/recommend" class="min_hide">推荐景点</el-menu-item>

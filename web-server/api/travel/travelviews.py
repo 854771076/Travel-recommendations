@@ -81,7 +81,7 @@ class TravelViewSet(viewsets.ModelViewSet):
 	queryset = Travel.objects
 	serializer_class =TravelSerializer
 	lookup_field ='id'
-	@action(detail=False, methods=['POST'])
+	@action(detail=False, methods=['GET'])
 	def guihua(self,request):
 		data={
 			'code':'200',
@@ -101,8 +101,9 @@ class TravelViewSet(viewsets.ModelViewSet):
 						(Q(low_price__lte=resume.low_price) |
 						Q(high_price__gte=resume.high_price))
 					)
-					travel_list=[i.travel.to_dict(None) for i in Travel.objects.filter()[(page-1)*pagesize:page*pagesize]]
-					
+					res=Travel.objects.filter(query)
+					travel_list=[i.to_dict(None) for i in res[(page-1)*pagesize:page*pagesize]]
+					data['count']=res.count()
 					data['data']=travel_list
 				else:
 					# 参数有误
@@ -200,8 +201,9 @@ class TravelViewSet(viewsets.ModelViewSet):
 				if serializer.is_valid():
 					page=serializer.validated_data.get('page')
 					pagesize=serializer.validated_data.get('pagesize')
-					travel_list=[i.travel.to_dict(None) for i in StarTravel.objects.filter(user=request.user)[(page-1)*pagesize:page*pagesize]]
-					
+					res=StarTravel.objects.filter(user=request.user)
+					travel_list=[i.travel.to_dict(None) for i in res[(page-1)*pagesize:page*pagesize]]
+					data['count']=res.count()
 					data['data']=travel_list
 				else:
 					# 参数有误
@@ -288,8 +290,9 @@ class TravelViewSet(viewsets.ModelViewSet):
 				if serializer.is_valid():
 					page=serializer.validated_data.get('page')
 					pagesize=serializer.validated_data.get('pagesize')
-					travel_list=[i.travel.to_dict(None) for i in ClickTravel.objects.filter(user=request.user)[(page-1)*pagesize:page*pagesize]]
-					
+					res=ClickTravel.objects.filter(user=request.user)
+					travel_list=[i.travel.to_dict(None) for i in res[(page-1)*pagesize:page*pagesize]]
+					data['count']=res.count()
 					data['data']=travel_list
 				else:
 					# 参数有误

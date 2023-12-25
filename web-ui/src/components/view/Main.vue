@@ -164,12 +164,7 @@ export default {
     methods: {
         
         search(){
-            if(this.query.type=='0'){
-                window.location.href='/travel'+`?keywords=${this.query.keywords}`
-            }else{
-                window.location.href='/company'+`?keywords=${this.query.keywords}`
-
-            }
+            window.location.href='/travel'+`?keywords=${this.query.keywords}`
         },
         async clicktravel(id){
             let response = await this.$http

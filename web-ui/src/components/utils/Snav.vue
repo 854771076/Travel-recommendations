@@ -29,17 +29,22 @@ export default {
             const arr=document.referrer.split('/').slice(3,)
             const referrer = '/'+arr.join('/');
             const currentPage = this.$route.query.page || 1;
-            console.log(referrer)
+            console.log(arr)
             if((arr.indexOf('travel')!=-1||arr.indexOf('recommend')!=-1)&&arr.length<2){
                 this.$router.push({
                 path: referrer,
-                query: {
-                    page: currentPage  // 将当前的页码作为 query 参数传递
-                }
+                query: q
                 });
-            }else{
+                
+            }else if(arr.indexOf('mine')!=-1){
+                this.$router.push({
+                path: referrer,
+                });
+            }
+            else{
                 this.$router.back()
             }
+            
             
         }
     },

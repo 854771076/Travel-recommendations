@@ -15,8 +15,8 @@
             </el-form>
         </div>
         <!-- 评论列表 -->
-        <ul v-infinite-scroll="getcomment" class="infinite-list" style="overflow: auto">
-            <li v-for="comment in comments" :key="comment.id" class="comment-item">
+        <ul v-infinite-scroll="getcomment" class="infinite-list" style="overflow: auto" ref="comment">
+            <li v-for="comment in comments" :key="comment.id" class="comment-item infinite-list-item">
                 <div class="comment-info">
                     <span class="username">{{ comment.username }}</span>
                     <span class="timestamp">{{ new Date(comment.create_time).toLocaleString() }}</span>
@@ -53,28 +53,35 @@ export default {
             newComment: {
                 id:this.id,
                 content: ''
-            }
+            },
+            isloading:false
         };
     },
     methods: {
         async getcomment() {
-
-            if (this.page <= this.maxpage && this.id) {
+            // console.log(this.page ,this.maxpage ,this.id)
+            if (this.page <= this.maxpage && this.id&&!this.isloading) {
+                this.isloading=true
                 let Loading = this.$Loading({ fullscreen: true })
                 let response = await this.$http
                     .get(this.$api.commenttravel + `?id=${this.id}&page=${this.page}`)
                     .then(response => {
                         this.comments = [...this.comments, ...response.data.data]
-                        this.maxpage = Math.ceil(response.data.count / 20)
-
+                        this.maxpage = Math.ceil(response.data.count / 10)
+                        
                         this.page += 1
+                        console.log(this.page ,this.maxpage ,this.id)
                         Loading.close()
+                        this.isloading=false
                     })
                     .catch(error => {
                         Loading.close()
+                        this.isloading=false
                         this.$Message.error('未查询到数据')
                     });
-            }
+            }else if(this.page > this.maxpage && this.maxpage!=0){
+            this.$Message({ type: 'success', message: '到底啦！' })
+        }
 
         },
         async refrashcomment() {
@@ -85,9 +92,10 @@ export default {
                 .get(this.$api.commenttravel + `?id=${this.id}&page=${this.page}`)
                 .then(response => {
                     this.comments = response.data.data
-                    this.maxpage = Math.ceil(response.data.count / 20)
+                    this.maxpage = Math.ceil(response.data.count / 10)
 
-                    this.page += 1
+                    this.page = 1
+                    this.$refs.comment.scrollTo(0, 0, 1000)
                     Loading.close()
                 })
                 .catch(error => {
@@ -95,6 +103,7 @@ export default {
                     this.$Message.error('未查询到数据')
                 });
         }
+        
 
         },
         async submitComment() {
@@ -134,6 +143,22 @@ export default {
 </script>
   
 <style scoped>
+.infinite-list {
+  max-height: 500px;
+  padding: 15px 0;
+  margin: 0;
+  list-style: none;
+}
+
+.infinite-list .infinite-list-item {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  height: 70px;
+} 
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
+}
 .comment-section {
     width: 100%;
     margin: 0 auto;

@@ -85,7 +85,7 @@
                 <template v-else>
                     <div class="simlarytravel">
                         <div class="simlarytravelinfo">
-                            <h3 style="text-align: center;width: 100%;">暂无数据!</h3>
+                            <el-empty description="description" />
                         </div>
                         
                     </div>

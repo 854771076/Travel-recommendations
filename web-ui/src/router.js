@@ -20,7 +20,7 @@ const router = createRouter({
     { path: '/login', name:'登录',component: Login },
     { path: '/resume', name:'喜好',component: Resume },
     { path: '/star', name:'收藏',component: Stars },
-    { path: '/guihua', name:'规划',component: Stars },
+    { path: '/guihua', name:'规划',component:Guihua},
 
     { path: '/history', name:'浏览',component: History },
     { path: '/Travel/detail/:id', name:'景区详细',component: TravelDetail  },

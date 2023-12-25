@@ -26,10 +26,7 @@
                 <span id="m_sex">{{ userinfo.genderTranslation }}</span>
                 <span>性别</span>
             </div>
-            <div>
-                <span id="m_user">{{ userinfo.currentIdentity }}</span>
-                <span>身份</span>
-            </div>
+            
         </div>
 
         <div class="fun_card">
@@ -58,7 +55,7 @@
                     <el-icon style="margin-right: 10px;">
                         <Edit />
                     </el-icon>
-                    <i>修改简历</i>
+                    <i>修改信息</i>
                 </span>
                 <i class="fa-solid fa-chevron-up fa-rotate-90"></i>
             </a>

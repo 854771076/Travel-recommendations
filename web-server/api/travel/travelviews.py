@@ -408,7 +408,7 @@ class TravelViewSet(viewsets.ModelViewSet):
 						#填充完还小于pagesize条，使用travel数据随机填充
 						length=len(travel_list)
 						if length<pagesize:
-							travel_list+=[i.to_dict('最新随机') for i in get_random_objects(Travel,pagesize-length)]
+							travel_list+=[i.to_dict('最新随机') for i in get_random_objects(travel,pagesize-length)]
 					else:
 						#如果有离线推荐数据
 						Rrecommend=Recommendforallusers.objects.filter(user_id=user_id)
@@ -421,7 +421,7 @@ class TravelViewSet(viewsets.ModelViewSet):
 							travel_id_list = [i.id for i in hot_TOP20.objects.all()]
 							travel_list=[i.to_dict('热门') for i in Travel.objects.filter(id__in=travel_id_list)]
 							if travel_list==[] or len(travel_list)<pagesize:
-								travel_list+=[i.to_dict('最新随机') for i in get_random_objects(Travel,pagesize-len(travel_list))]
+								travel_list+=[i.to_dict('最新随机') for i in get_random_objects(travel,pagesize-len(travel_list))]
 
 				else:
 					if page==1:
@@ -430,9 +430,9 @@ class TravelViewSet(viewsets.ModelViewSet):
 						travel_list=[i.to_dict('热门') for i in Travel.objects.filter(id__in=travel_id_list)]
 						#最新随机数据填充
 						if travel_list==[] or len(travel_list)<pagesize:
-								travel_list+=[i.to_dict('最新随机') for i in get_random_objects(Travel,pagesize-len(travel_list))]
+								travel_list+=[i.to_dict('最新随机') for i in get_random_objects(travel,pagesize-len(travel_list))]
 					else:
-						travel_list=[i.to_dict('最新随机') for i in get_random_objects(Travel,pagesize)]
+						travel_list=[i.to_dict('最新随机') for i in get_random_objects(travel,pagesize)]
 				data['data']=travel_list
 				data['page']=page
 			except Exception as e:

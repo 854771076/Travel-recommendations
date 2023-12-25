@@ -98,14 +98,14 @@ class TravelViewSet(viewsets.ModelViewSet):
 					city=[resume.city1,resume.city2,resume.city3]
 					if 0 in city:
 						query = (
-							Q(topic__in=resume.topic if resume.topic!=0 else [i for i in range(100)]) &
+							Q(topic__in=[resume.topic] if [resume.topic]!=0 else [i for i in range(100)]) &
 							(Q(low_price__lte=resume.low_price) |
 							Q(high_price__gte=resume.high_price))
 						)
 					else:
 						query = (
 							Q(city__in=city) &
-							Q(topic=resume.topic) &
+							Q(topic__in=[resume.topic] if [resume.topic]!=0 else [i for i in range(100)]) &
 							(Q(low_price__lte=resume.low_price) |
 							Q(high_price__gte=resume.high_price))
 						)

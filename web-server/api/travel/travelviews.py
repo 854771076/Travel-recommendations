@@ -101,7 +101,12 @@ class TravelViewSet(viewsets.ModelViewSet):
 						(Q(low_price__lte=resume.low_price) |
 						Q(high_price__gte=resume.high_price))
 					)
-					res=Travel.objects.filter(query)
+					res=StarTravel.objects.filter(query)
+					
+					if not res.exists():
+						res=ClickTravel.objects.filter(query)
+						if res.exists():
+							res=Travel.objects.filter(query)
 					travel_list=[i.to_dict(None) for i in res[(page-1)*pagesize:page*pagesize]]
 					data['count']=res.count()
 					data['data']=travel_list

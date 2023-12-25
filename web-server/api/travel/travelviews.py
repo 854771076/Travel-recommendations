@@ -95,20 +95,34 @@ class TravelViewSet(viewsets.ModelViewSet):
 					page=serializer.validated_data.get('page')
 					pagesize=serializer.validated_data.get('pagesize')
 					resume=UserResume.objects.get(user=request.user)
-					query = (
-						Q(city__in=[resume.city1,resume.city2,resume.city3]) &
-						Q(topic=resume.topic) &
-						(Q(low_price__lte=resume.low_price) |
-						Q(high_price__gte=resume.high_price))
-					)
-					res=StarTravel.objects.filter(query)
+					city=[resume.city1,resume.city2,resume.city3]
+					if 0 in city:
+						query = (
+							Q(topic__in=resume.topic if resume.topic!=0 else [i for i in range(100)]) &
+							(Q(low_price__lte=resume.low_price) |
+							Q(high_price__gte=resume.high_price))
+						)
+					else:
+						query = (
+							Q(city__in=city) &
+							Q(topic=resume.topic) &
+							(Q(low_price__lte=resume.low_price) |
+							Q(high_price__gte=resume.high_price))
+						)
+					res=Travel.objects.filter(query)
+					res2=StarTravel.objects.filter(travel__in=res)
 					
-					if not res.exists():
-						res=ClickTravel.objects.filter(query)
-						if res.exists():
-							res=Travel.objects.filter(query)
-					travel_list=[i.to_dict(None) for i in res[(page-1)*pagesize:page*pagesize]]
-					data['count']=res.count()
+					if not res2.exists():
+						res2=ClickTravel.objects.filter(travel__in=res)
+						if not res2.exists():
+							travel_list=[i.to_dict(None) for i in res[(page-1)*pagesize:page*pagesize]]
+							data['count']=res.count()
+						else:
+							travel_list=[i.travel.to_dict(None) for i in res2[(page-1)*pagesize:page*pagesize]]
+							data['count']=res2.count()
+					else:
+						travel_list=[i.travel.to_dict(None) for i in res2[(page-1)*pagesize:page*pagesize]]
+						data['count']=res2.count()
 					data['data']=travel_list
 				else:
 					# 参数有误

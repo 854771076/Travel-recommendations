@@ -9,7 +9,7 @@ import 'element-plus/dist/index.css'
 import { ElLoading } from 'element-plus'
 import * as Elicons from "@element-plus/icons-vue";
 const app = createApp(App)
-const method='de'
+const method='dev'
 if(method=='dev'){
     const com = '127.0.0.1:8000'
     axios.defaults.baseURL = '//127.0.0.1:8000'

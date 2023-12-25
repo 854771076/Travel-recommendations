@@ -30,13 +30,7 @@ export default {
             const referrer = '/'+arr.join('/');
             const currentPage = this.$route.query.page || 1;
             console.log(arr)
-            if((arr.indexOf('travel')!=-1||arr.indexOf('recommend')!=-1)&&arr.length<2){
-                this.$router.push({
-                path: referrer,
-                query: q
-                });
-                
-            }else if(arr.indexOf('mine')!=-1){
+            if(arr.indexOf('mine')!=-1){
                 this.$router.push({
                 path: referrer,
                 });

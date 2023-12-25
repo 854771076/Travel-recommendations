@@ -49,90 +49,94 @@ export default {
 
             ],
             maxpage: 1,
-            page:1,
+            page: 1,
             newComment: {
-                id:this.id,
+                id: this.id,
                 content: ''
             },
-            isloading:false
+            isloading: false,
+            isloading2:false
         };
     },
     methods: {
         async getcomment() {
             // console.log(this.page ,this.maxpage ,this.id)
-            if (this.page <= this.maxpage && this.id&&!this.isloading) {
-                this.isloading=true
+            if (this.page <= this.maxpage && this.id && !this.isloading) {
+                this.isloading = true
                 let Loading = this.$Loading({ fullscreen: true })
                 let response = await this.$http
                     .get(this.$api.commenttravel + `?id=${this.id}&page=${this.page}`)
                     .then(response => {
                         this.comments = [...this.comments, ...response.data.data]
                         this.maxpage = Math.ceil(response.data.count / 10)
-                        
+
                         this.page += 1
-                        console.log(this.page ,this.maxpage ,this.id)
+                        console.log(this.page, this.maxpage, this.id)
                         Loading.close()
-                        this.isloading=false
+                        this.isloading = false
                     })
                     .catch(error => {
                         Loading.close()
-                        this.isloading=false
+                        this.isloading = false
                         this.$Message.error('未查询到数据')
                     });
-            }else if(this.page > this.maxpage && this.maxpage!=0){
-            this.$Message({ type: 'success', message: '到底啦！' })
-        }
+            } if (this.page > this.maxpage && this.maxpage != 0) {
+                this.$Message({ type: 'success', message: '到底啦！' })
+            }
 
         },
         async refrashcomment() {
 
-        if (this.page <= this.maxpage && this.id) {
-            let Loading = this.$Loading({ fullscreen: true })
-            let response = await this.$http
-                .get(this.$api.commenttravel + `?id=${this.id}&page=${this.page}`)
-                .then(response => {
-                    this.comments = response.data.data
-                    this.maxpage = Math.ceil(response.data.count / 10)
+            if (this.page <= this.maxpage && this.id&& !this.isloading2) {
+                this.isloading2 = true
+                let Loading = this.$Loading({ fullscreen: true })
+                let response = await this.$http
+                    .get(this.$api.commenttravel + `?id=${this.id}&page=${this.page}`)
+                    .then(response => {
+                        this.comments = response.data.data
+                        this.maxpage = Math.ceil(response.data.count / 10)
 
-                    this.page = 1
-                    this.$refs.comment.scrollTo(0, 0, 1000)
-                    Loading.close()
-                })
-                .catch(error => {
-                    Loading.close()
-                    this.$Message.error('未查询到数据')
-                });
-        }
-        
+                        this.page = 2
+                        this.$refs.comment.scrollTo(0, 0, 1000)
+                        Loading.close()
+                        this.isloading2 =false
+                    })
+                    .catch(error => {
+                        Loading.close()
+                        this.$Message.error('未查询到数据')
+                        this.isloading2 =false
+                    });
+            }
+
 
         },
         async submitComment() {
             let Loading = this.$Loading({ fullscreen: true })
-            if(this.newComment.content!=''){
+            if (this.newComment.content != '') {
                 let response = await this.$http
-                .post(this.$api.comment ,this.newComment)
-                .then(response => {
-                    if(response.data.code=="200"){
-                        this.page=1
-                    this.refrashcomment()
-                    Loading.close()
-                    this.$Message({ type: 'success', message: '评论成功' })
-                    }
-                    else{
-                        this.$Message.error(response.data.msg,response.data.data)
-                        Loading.close()
-                    }
+                    .post(this.$api.comment, this.newComment)
+                    .then(response => {
+                        if (response.data.code == "200") {
+                            this.page = 2
+                            this.refrashcomment()
+                            Loading.close()
+                            this.$Message({ type: 'success', message: '评论成功' })
+                        }
+                        else {
+                            this.$Message.error(response.data.msg, response.data.data)
+                            Loading.close()
+                        }
 
-                })
-                .catch(error => {
-                    Loading.close()
-                    this.$Message.error(error)
-                });
-            }else{
+                    })
+                    .catch(error => {
+                        Loading.close()
+                        this.$Message.error(error)
+                    });
+            } else {
                 this.$Message.error('评论不能为空')
                 Loading.close()
             }
-            
+
 
             // 清空表单
             this.newComment.username = '';
@@ -144,21 +148,23 @@ export default {
   
 <style scoped>
 .infinite-list {
-  max-height: 500px;
-  padding: 15px 0;
-  margin: 0;
-  list-style: none;
+    max-height: 500px;
+    padding: 15px 0;
+    margin: 0;
+    list-style: none;
 }
 
 .infinite-list .infinite-list-item {
-  /* display: flex;
+    /* display: flex;
   align-items: center;
   justify-content: center; */
-  height: 70px;
-} 
-.infinite-list .infinite-list-item + .list-item {
-  margin-top: 10px;
+    height: 70px;
 }
+
+.infinite-list .infinite-list-item+.list-item {
+    margin-top: 10px;
+}
+
 .comment-section {
     width: 100%;
     margin: 0 auto;

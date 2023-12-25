@@ -152,7 +152,7 @@ class MysqlDB:
             raise ValueError(f'保存失败-error:{e}-sql:{sql}')
 def   get_list_data(data):
     if data!=[]:
-        return data[0].strip().replace(']','')
+        return data[0].strip().replace(']','').replace('[','')
     else:
         return "" 
 def spider_page(page):

@@ -11,7 +11,7 @@
  Target Server Version : 50726 (5.7.26-log)
  File Encoding         : 65001
 
- Date: 25/12/2023 10:48:37
+ Date: 26/12/2023 16:24:02
 */
 
 SET NAMES utf8mb4;
@@ -136,7 +136,7 @@ CREATE TABLE `click`  (
   PRIMARY KEY (`cid`) USING BTREE,
   INDEX `click_travel_id_c59b75a9`(`travel_id`) USING BTREE,
   INDEX `click_user_id_43946bc8`(`user_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of click
@@ -156,9 +156,13 @@ INSERT INTO `click` VALUES (12, 10, '2023-10-27 09:17:18.000000', '2023-10-27 09
 INSERT INTO `click` VALUES (13, 2, '2023-12-24 23:56:35.924081', '2023-12-24 23:56:35.924081', 22, 1);
 INSERT INTO `click` VALUES (14, 2, '2023-12-24 23:57:26.133199', '2023-12-24 23:57:26.133199', 21, 1);
 INSERT INTO `click` VALUES (15, 5, '2023-12-25 00:11:10.831976', '2023-12-25 00:11:10.832974', 87, 1);
-INSERT INTO `click` VALUES (16, 2, '2023-12-25 00:49:23.651928', '2023-12-25 00:49:23.651928', 97, 1);
-INSERT INTO `click` VALUES (17, 2, '2023-12-25 00:55:24.925170', '2023-12-25 00:55:24.925690', 82, 1);
+INSERT INTO `click` VALUES (16, 22, '2023-12-25 00:49:23.651928', '2023-12-25 00:49:23.651928', 97, 1);
+INSERT INTO `click` VALUES (17, 6, '2023-12-25 00:55:24.925170', '2023-12-25 00:55:24.925690', 82, 1);
 INSERT INTO `click` VALUES (18, 35, '2023-12-25 01:04:21.403857', '2023-12-25 01:04:21.403857', 308, 1);
+INSERT INTO `click` VALUES (19, 2, '2023-12-25 13:28:55.077673', '2023-12-25 13:28:55.077673', 7, 1);
+INSERT INTO `click` VALUES (20, 2, '2023-12-25 13:32:17.331301', '2023-12-25 13:32:17.331301', 293, 1);
+INSERT INTO `click` VALUES (21, 3, '2023-12-26 14:37:01.554953', '2023-12-26 14:37:01.554953', 78, 1);
+INSERT INTO `click` VALUES (22, 2, '2023-12-26 15:09:56.480905', '2023-12-26 15:09:56.480905', 74, 1);
 
 -- ----------------------------
 -- Table structure for comment
@@ -173,7 +177,7 @@ CREATE TABLE `comment`  (
   PRIMARY KEY (`cid`) USING BTREE,
   INDEX `comment_travel_id_8827a855`(`travel_id`) USING BTREE,
   INDEX `comment_user_id_2224f9d1`(`user_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comment
@@ -182,6 +186,22 @@ INSERT INTO `comment` VALUES (1, 'good', '2023-12-25 02:00:03.690132', 308, 1);
 INSERT INTO `comment` VALUES (2, 'nice', '2023-12-25 02:01:56.367115', 308, 1);
 INSERT INTO `comment` VALUES (3, '666', '2023-12-25 02:14:41.410386', 308, 1);
 INSERT INTO `comment` VALUES (4, 'test', '2023-12-25 02:15:47.455980', 308, 1);
+INSERT INTO `comment` VALUES (5, '111', '2023-12-26 14:23:09.650781', 97, 1);
+INSERT INTO `comment` VALUES (6, '666', '2023-12-26 14:23:14.696790', 97, 1);
+INSERT INTO `comment` VALUES (7, '666', '2023-12-26 14:23:24.010760', 97, 1);
+INSERT INTO `comment` VALUES (8, '888', '2023-12-26 14:26:23.219560', 97, 1);
+INSERT INTO `comment` VALUES (9, '999', '2023-12-26 14:30:22.794803', 97, 1);
+INSERT INTO `comment` VALUES (10, '555', '2023-12-26 14:30:41.818070', 97, 1);
+INSERT INTO `comment` VALUES (11, '555', '2023-12-26 14:31:11.642409', 97, 1);
+INSERT INTO `comment` VALUES (12, '666', '2023-12-26 14:31:46.665410', 97, 1);
+INSERT INTO `comment` VALUES (13, '777', '2023-12-26 14:31:58.081587', 97, 1);
+INSERT INTO `comment` VALUES (14, '777', '2023-12-26 14:32:01.530148', 97, 1);
+INSERT INTO `comment` VALUES (15, '888', '2023-12-26 14:32:46.195029', 97, 1);
+INSERT INTO `comment` VALUES (16, '111', '2023-12-26 14:33:59.010065', 82, 1);
+INSERT INTO `comment` VALUES (17, '222', '2023-12-26 14:36:27.297373', 82, 1);
+INSERT INTO `comment` VALUES (18, '999', '2023-12-26 14:36:50.042325', 97, 1);
+INSERT INTO `comment` VALUES (19, '111', '2023-12-26 14:37:03.697716', 78, 1);
+INSERT INTO `comment` VALUES (20, '111', '2023-12-26 15:09:59.441495', 74, 1);
 
 -- ----------------------------
 -- Table structure for django_admin_log
@@ -288,6 +308,7 @@ CREATE TABLE `django_session`  (
 -- ----------------------------
 -- Records of django_session
 -- ----------------------------
+INSERT INTO `django_session` VALUES ('ktofbwtefku9axjo1i7ba7iphk92fbmo', '.eJzFVk1vozAQ_SsV5yjxBzYmx73vL1gqNDameMtHZPDuocp_L1N6aEqARpXS04jxzPN7bwbES5RDGKo89NbnroiOEY12H3MazLNt8aD4C-1TtzddO3in91iyfz_t97-7wta_3msvACroK-wm2hpLGOWEaCpBJ5IZmnLCkkRIqUjKNGUAWsuSKsq5iGMhmZIipkCURtDGtqEfsf68ZFELjc2i40MWZVlIBFNjkIwn-KSBYoiJzKLdWNEguR6rNzrj0mKnJLKcOoOvp9IDFI1r4eQOKOownWpvoTA-NPor4DNabrQSa9tQ1-fdw43ULrofMWNdgQlKCNuESwTXYxDElDfo9rYPjf0B9Rt017zgm-CSAz4pLsiiem9N14z7V5Sdh7pGM_of8GFGdU15fAVOCi4RQJjlSfcD-MHDP1vfReGM0pomcQVAaRO_BQ2LmqbpDXeUNWO1Jkte86WIcdlVatSyrNqZ53vO6jOnNVHJlMj_W_dUDZgklwX02g1S4g0J0emtn3JiizGkwqpPOEvuVd2QD92JkS96t8Ft601e57fmZLpslOAcMDCK81RKLi_LTXvyPa0b5Fa0UjLbGnpphjo_jj8DvWtOtQ0uZ4RxypiMjoMP9vwK0q60-Q:1rI2e2:mnzJJd3AOqMvR0AZReUu7krJoCbjgp8_cGAemNL3VyU', '2024-01-09 16:18:34.097443');
 
 -- ----------------------------
 -- Table structure for hot_top20
@@ -382,7 +403,7 @@ CREATE TABLE `resume`  (
 -- ----------------------------
 -- Records of resume
 -- ----------------------------
-INSERT INTO `resume` VALUES (1, 1, '石家庄', 3, '邯郸', 7, '廊坊', 4, '主题乐园', 30, 180, '2023-12-22 13:03:49.000000', '2023-12-25 00:39:23.866998', 1);
+INSERT INTO `resume` VALUES (1, 0, '不限', 5, '秦皇岛', 4, '张家口', 4, '主题乐园', 30, 180, '2023-12-22 13:03:49.000000', '2023-12-25 13:51:05.979853', 1);
 INSERT INTO `resume` VALUES (2, 11, '衡水', 10, '沧州', 7, '廊坊', 4, '主题乐园', 100, 280, '2023-12-22 13:03:49.000000', '2023-12-22 13:03:55.000000', 2);
 INSERT INTO `resume` VALUES (3, 1, '石家庄', 5, '秦皇岛', 4, '张家口', 10, '展览展馆', 100, 580, '2023-12-22 13:03:49.000000', '2023-12-22 13:03:55.000000', 3);
 
@@ -398,7 +419,7 @@ CREATE TABLE `star`  (
   PRIMARY KEY (`sid`) USING BTREE,
   INDEX `star_travel_id_edf5f396`(`travel_id`) USING BTREE,
   INDEX `star_user_id_30b629e4`(`user_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of star
@@ -416,6 +437,7 @@ INSERT INTO `star` VALUES (10, '2023-10-23 17:45:03.000000', 23, 3);
 INSERT INTO `star` VALUES (11, '2023-10-23 17:45:03.000000', 25, 3);
 INSERT INTO `star` VALUES (12, '2023-10-23 17:45:03.000000', 26, 3);
 INSERT INTO `star` VALUES (13, '2023-12-24 23:56:45.715656', 22, 1);
+INSERT INTO `star` VALUES (14, '2023-12-25 13:32:19.333587', 293, 1);
 
 -- ----------------------------
 -- Table structure for travel
@@ -783,7 +805,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'pbkdf2_sha256$260000$R8vGws1zEFAPVTqDlX517K$ndi59BtPgKB6SrE4TNaXnYXpeV9VYzTB7X9w+dj/Po4=', '2023-12-24 21:24:18.866221', 1, 'root', '', '', '854771076@qq.com', 1, 1, '2023-10-20 09:37:58.835221', 'yyy', '2023-12-24', 0, '女', '', 'root/headerpic.jpg', 1, '2023-12-25 00:39:23.870587', 1);
+INSERT INTO `user` VALUES (1, 'pbkdf2_sha256$260000$R8vGws1zEFAPVTqDlX517K$ndi59BtPgKB6SrE4TNaXnYXpeV9VYzTB7X9w+dj/Po4=', '2023-12-26 15:23:11.842153', 1, 'root', '', '', '854771076@qq.com', 1, 1, '2023-10-20 09:37:58.835221', 'yyy', '2023-12-24', 0, '女', '', 'root/headerpic.jpg', 1, '2023-12-26 14:30:17.448991', 1);
 INSERT INTO `user` VALUES (2, 'pbkdf2_sha256$260000$R8vGws1zEFAPVTqDlX517K$ndi59BtPgKB6SrE4TNaXnYXpeV9VYzTB7X9w+dj/Po4=', NULL, 1, 'JF100000', '', '', '2910226625@qq.com', 1, 1, '2023-10-20 09:37:58.835221', NULL, NULL, NULL, NULL, '', NULL, NULL, '2023-10-20 09:37:58.957336', 2);
 INSERT INTO `user` VALUES (3, 'pbkdf2_sha256$260000$R8vGws1zEFAPVTqDlX517K$ndi59BtPgKB6SrE4TNaXnYXpeV9VYzTB7X9w+dj/Po4=', NULL, 1, 'JF100001', '', '', 'fuyang854771076@gmail.com', 1, 1, '2023-10-20 09:37:58.835221', NULL, NULL, NULL, NULL, '', NULL, NULL, '2023-10-20 09:37:58.957336', 3);
 

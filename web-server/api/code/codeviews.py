@@ -67,7 +67,7 @@ class CaptchaAPIView(APIView):
 		response.set_cookie('captcha',make_password(captcha.lower()))
 		return response	
 class EmailCodeThrottle(UserRateThrottle):
-	rate = '10/m'
+	rate = '100/m'
 	
 class EmailCodeView(APIView):
 	authentication_classes = [JWTAuthentication]

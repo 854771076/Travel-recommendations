@@ -97,23 +97,36 @@ class TravelViewSet(viewsets.ModelViewSet):
 					resume=UserResume.objects.get(user=request.user)
 					city=[resume.city1,resume.city2,resume.city3]
 					if 0 in city:
-						query = (
-							Q(topic__in=[resume.topic] if [resume.topic]!=0 else [i for i in range(100)]) &
-							(Q(low_price__lte=resume.low_price) |
-							Q(high_price__gte=resume.high_price))
-						)
+						if resume.topic==0:
+							query = (
+								Q(low_price__gte=resume.low_price) &
+								Q(high_price__lte=resume.high_price)
+							)
+						else:
+							query = (
+								Q(topic=resume.topic) &
+								Q(low_price__gte=resume.low_price) &
+								Q(high_price__lte=resume.high_price)
+							)
 					else:
-						query = (
-							Q(city__in=city) &
-							Q(topic__in=[resume.topic] if [resume.topic]!=0 else [i for i in range(100)]) &
-							(Q(low_price__lte=resume.low_price) |
-							Q(high_price__gte=resume.high_price))
-						)
+						if resume.topic==0:
+							query = (
+           						Q(city__in=city) &
+								Q(low_price__gte=resume.low_price) &
+								Q(high_price__lte=resume.high_price)
+							)
+						else:
+							query = (
+								Q(city__in=city) &
+								Q(topic=resume.topic) &
+								Q(low_price__gte=resume.low_price) &
+								Q(high_price__lte=resume.high_price)
+							)
 					res=Travel.objects.filter(query)
-					res2=StarTravel.objects.filter(travel__in=res)
+					res2=StarTravel.objects.filter(travel__in=res,user=request.user)
 					
 					if not res2.exists():
-						res2=ClickTravel.objects.filter(travel__in=res)
+						res2=ClickTravel.objects.filter(travel__in=res,user=request.user)
 						if not res2.exists():
 							travel_list=[i.to_dict(None) for i in res[(page-1)*pagesize:page*pagesize]]
 							data['count']=res.count()

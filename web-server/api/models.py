@@ -41,10 +41,13 @@ class Travel(models.Model):
         }
         # 将字典转换为JSON字符串并返回
         return job_dict
+    def __str__(self):
+        return f'{self.name}'
     class Meta:
         managed = False
         verbose_name = '景区列表'
         db_table = 'travel'
+        verbose_name_plural = verbose_name
 class UserResume(models.Model):
     class Sex(models.TextChoices):
         男 = '1'
@@ -96,7 +99,7 @@ class UserResume(models.Model):
         verbose_name = '用户画像信息'
         db_table = 'resume'
         verbose_name_plural = verbose_name
-
+    
     
 class user(AbstractUser):
 
@@ -136,7 +139,8 @@ class Recommendforallusers(models.Model):
         
         return [i.get('travel_id') for i in loads(self.recommendations)]
     class Meta:
-        verbose_name = '用户推荐列表'
+        verbose_name = '用户推荐'
+        verbose_name_plural = verbose_name
         managed = False
         db_table = 'recommendforallusers'
         
@@ -146,7 +150,8 @@ class StarTravel(models.Model):
     travel=models.ForeignKey('api.Travel', verbose_name="景点", on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now=False,auto_now_add=True, verbose_name='创建时间')
     class Meta:
-        verbose_name = '收藏列表'
+        verbose_name = '收藏'
+        verbose_name_plural = verbose_name
         db_table = 'star'
 class CommentTravel(models.Model):
     cid=models.BigAutoField(primary_key=True)
@@ -155,7 +160,8 @@ class CommentTravel(models.Model):
     content=models.TextField(verbose_name='内容')
     create_time = models.DateTimeField(auto_now=False,auto_now_add=True, verbose_name='创建时间')
     class Meta:
-        verbose_name = '评论列表'
+        verbose_name = '评论'
+        verbose_name_plural = verbose_name
         db_table = 'comment'   
 class ClickTravel(models.Model):
     cid=models.BigAutoField(primary_key=True)
@@ -164,16 +170,19 @@ class ClickTravel(models.Model):
     count=models.IntegerField(default=1)
     create_time = models.DateTimeField(auto_now=False,auto_now_add=True, verbose_name='创建时间')
     last_update = models.DateTimeField(auto_now=True,auto_now_add=False, verbose_name='最后修改时间')
+
     class Meta:
-        verbose_name = '浏览列表'
+        verbose_name = '浏览'
         db_table = 'click'
+        verbose_name_plural = verbose_name
 class hot_TOP20(models.Model):
     id=models.IntegerField(primary_key=True)
     weight=models.IntegerField(null=True)
     class Meta:
         managed = False
-        verbose_name = '景点热门列表'
+        verbose_name = '景点热门'
         db_table = 'hot_top20'
+        verbose_name_plural = verbose_name
 @receiver(post_save, sender=user)
 def createResume(sender, instance, **kwargs):
     resume=UserResume.objects.filter(user=instance)

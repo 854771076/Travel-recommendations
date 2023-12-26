@@ -76,6 +76,74 @@ else:
 SIMPLEUI_HOME_PAGE = '/'
 SIMPLEUI_LOGO ='/favicon.ico'
 ALLOWED_HOSTS = ['*']
+# 自定义菜单
+SIMPLEUI_CONFIG = {
+    'system_keep': True,
+    'menu_display': ['用户管理', '景点管理'],
+    'menus': [
+        # {
+        #     'name': '其他工具',
+        #     'icon': 'fas fa-wrench',
+        #     'models': [
+        #         {
+        #             'name': '目录编排',
+        #             'icon': 'fas fa-folder-open',
+        #             'url': '/home/#/directory/'
+        #         }
+        #     ]
+        # },
+
+        {
+            'name':'用户管理',
+            'models': [
+                {
+                    'name': '用户信息',
+                    'url':'/adminapi/user/'
+                    
+                },
+                {
+                    'name': '用户画像信息',
+                    'url':'/adminapi/userresume/'
+                    
+                },
+                {
+                    'name': '用户推荐',
+                    'url':'/adminapi/recommendforallusers/'
+                    
+                },
+                {
+                    'name': '收藏',
+                    'url':'/adminapi/startravel/'
+                    
+                },
+                {
+                    'name': '评论',
+                    'url':'/adminapi/commenttravel/'
+                    
+                },
+                {
+                    'name': '浏览',
+                    'url':'/adminapi/clicktravel/'
+                    
+                },
+            ]
+        },
+        {
+            'name':'景点管理',
+            'models':[
+                {
+                    'name': '热门景点',
+                    'url':'/adminapi/hot_top20/'
+                },
+                {
+                    'name': '景区列表',
+                    'url':'/adminapi/travel/'
+                }
+            ]
+        }
+    ]
+}
+
 # APPEND_SLASH=False
 # # Application definition
 SIMPLEUI_HOME_INFO = False

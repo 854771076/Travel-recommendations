@@ -1,6 +1,6 @@
 <template>
     <Snav>
-        <template v-slot:name>岗位详细</template>
+        <template v-slot:name>景点详细</template>
     </Snav>
     <div
         style="width:100%;background-color:rgba(255, 255, 255, 0.726);box-shadow:0 3px 10px 0 rgba(0,0,0,.12);margin-bottom: 20px;padding-top: 45px;">

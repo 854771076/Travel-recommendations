@@ -13,6 +13,7 @@ urlpatterns = [
     path('guihua', VueAppView.as_view()),
     path('mine', VueAppView.as_view()),
     path('resume', VueAppView.as_view()),
+     path('travel', VueAppView.as_view()),
     re_path('travel/detail/*', VueAppView.as_view()),
 
     

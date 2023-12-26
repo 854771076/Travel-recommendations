@@ -156,10 +156,13 @@ def   get_list_data(data):
     else:
         return "" 
 def spider_page(page):
+    #请求头
     headers={
     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'
     }
+    #发起请求
     r=requests.get(f'http://s.lvmama.com/ticket/H9K310000P{page}PRO3?keyword=%E6%B2%B3%E5%8C%97&tabType=route350#list',headers=headers)
+    #xpath解析
     tree=etree.HTML(r.text)
     try:
         dd=tree.xpath('//*[@class="product-details clearfix"]//dd/text()')

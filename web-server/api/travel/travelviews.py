@@ -273,28 +273,25 @@ class TravelViewSet(viewsets.ModelViewSet):
 			'data':[],
 			'msg':'ok',
 		}
-		if request.user.is_authenticated:
-			try:
-				serializer=RecommendSerializer(data=request.GET)
-				oid=int(request.GET.get('id'))
-				if serializer.is_valid() and oid:
-					page=serializer.validated_data.get('page')
-					pagesize=serializer.validated_data.get('pagesize')
-					t=Travel.objects.get(id=oid)
-					travel_list=[{'id':i.cid,'username':i.user.username,'content':i.content,'create_time':i.create_time} for i in CommentTravel.objects.filter(travel=t).order_by('-create_time')[(page-1)*pagesize:page*pagesize]]
-					data['count']=CommentTravel.objects.filter(travel=t).count()
-					data['data']=travel_list
-				else:
-					# 参数有误
-					data['code']='-1'
-					data['msg']=serializer.errors	
-			except Exception as e:
+		try:
+			serializer=RecommendSerializer(data=request.GET)
+			oid=int(request.GET.get('id'))
+			if serializer.is_valid() and oid:
+				page=serializer.validated_data.get('page')
+				pagesize=serializer.validated_data.get('pagesize')
+				t=Travel.objects.get(id=oid)
+				travel_list=[{'id':i.cid,'username':i.user.username,'content':i.content,'create_time':i.create_time} for i in CommentTravel.objects.filter(travel=t).order_by('-create_time')[(page-1)*pagesize:page*pagesize]]
+				data['count']=CommentTravel.objects.filter(travel=t).count()
+				data['data']=travel_list
+			else:
+				# 参数有误
 				data['code']='-1'
-				data['data']=str(e)
-				data['msg']='系统错误'
-		else:
-			data['code']=-1
-			data['msg']='请登录'
+				data['msg']=serializer.errors	
+		except Exception as e:
+			data['code']='-1'
+			data['data']=str(e)
+			data['msg']='系统错误'
+
 		return Response(data)
 	@action(detail=False, methods=['GET'])
 	def clickTravel(self,request):

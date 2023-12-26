@@ -55,7 +55,7 @@ export default {
                 content: ''
             },
             isloading: false,
-            isloading2:false
+            isloading2: false
         };
     },
     methods: {
@@ -80,14 +80,15 @@ export default {
                         this.isloading = false
                         this.$Message.error('未查询到数据')
                     });
-            } if (this.page > this.maxpage && this.maxpage != 0) {
-                this.$Message({ type: 'success', message: '到底啦！' })
-            }
+                if (this.page > this.maxpage && this.maxpage != 0 && this.maxpage != 1) {
+                    this.$Message({ type: 'success', message: '到底啦！' })
+                }
 
+            }
         },
         async refrashcomment() {
-
-            if (this.page <= this.maxpage && this.id&& !this.isloading2) {
+            console.log(this.page, this.maxpage, this.id)
+            if ((this.page <= this.maxpage && this.id && !this.isloading2) || this.maxpage == 0) {
                 this.isloading2 = true
                 let Loading = this.$Loading({ fullscreen: true })
                 let response = await this.$http
@@ -99,12 +100,12 @@ export default {
                         this.page = 2
                         this.$refs.comment.scrollTo(0, 0, 1000)
                         Loading.close()
-                        this.isloading2 =false
+                        this.isloading2 = false
                     })
                     .catch(error => {
                         Loading.close()
                         this.$Message.error('未查询到数据')
-                        this.isloading2 =false
+                        this.isloading2 = false
                     });
             }
 
@@ -117,8 +118,10 @@ export default {
                     .post(this.$api.comment, this.newComment)
                     .then(response => {
                         if (response.data.code == "200") {
-                            this.page = 2
+                            this.page = 1
                             this.refrashcomment()
+
+
                             Loading.close()
                             this.$Message({ type: 'success', message: '评论成功' })
                         }
